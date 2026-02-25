@@ -1,5 +1,14 @@
 from app import app
 from flask import render_template, request, redirect, url_for, flash
+from datetime import date
+
+
+###
+# Helper Functions
+###
+
+def format_date_joined(join_date):
+    return join_date.strftime("%B, %Y")
 
 
 ###
@@ -15,7 +24,23 @@ def home():
 @app.route('/about/')
 def about():
     """Render the website's about page."""
-    return render_template('about.html', name="Mary Jane")
+    return render_template('about.html', name="Tay Johnson")
+
+
+@app.route('/profile')
+def profile():
+    user = {
+        "name": "Tay Johnson",
+        "username": "tayj",
+        "location": "Kingston, Jamaica",
+        "bio": "I love building web apps!",
+        "posts": 20,
+        "followers": 310,
+        "following": 180,
+        "joined": format_date_joined(date(2022, 9, 1))
+    }
+
+    return render_template('profile.html', user=user)
 
 
 ###
@@ -33,8 +58,7 @@ def send_text_file(file_name):
 def add_header(response):
     """
     Add headers to both force latest IE rendering engine or Chrome Frame,
-    and also tell the browser not to cache the rendered page. If we wanted
-    to we could change max-age to 600 seconds which would be 10 minutes.
+    and also tell the browser not to cache the rendered page.
     """
     response.headers['X-UA-Compatible'] = 'IE=Edge,chrome=1'
     response.headers['Cache-Control'] = 'public, max-age=0'
